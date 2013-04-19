@@ -1,0 +1,49 @@
+package com.nbs;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import junit.framework.TestCase;
+import junit.framework.TestSuite;
+import junit.textui.TestRunner;
+
+
+  public class DateEpochConverter extends TestCase
+	{
+		
+		
+		public static void main(String[] args) 
+		{
+			TestRunner.runAndWait(new TestSuite(DateEpochConverter.class));
+		}
+
+		public void testGetName() throws Exception 
+		{
+		    assertEquals(1366070400,getEpochTime("04-16-2013"));
+		}
+		
+		
+		public static long getEpochTime(String sdate) {
+
+			SimpleDateFormat df = new SimpleDateFormat("MM-dd-yy");
+			
+			Date date;
+			long epochTime = 0;
+		
+			try {
+				date = df.parse(sdate);
+				epochTime = date.getTime() / 1000 - 4 * 3600;
+				System.out.println("epochStartDate is " + epochTime);
+				// The output epoch time is 4 hours in advance to the UK epoch
+				// timecheck
+
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+
+			return epochTime;
+		}
+	}
+
