@@ -1,5 +1,8 @@
+package com.nbs;
+
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -7,42 +10,71 @@ import java.io.OutputStreamWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
+import java.util.TimeZone;
 
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JSONSerializer;
 
+import org.apache.log4j.Logger;
 
-public class NBS_Data{
-  
-	String[] gcdm_id={"421045","1001305","1001710","1002115","1002270","1003770","1004950","1005065","1005690","1007505","1007540","1008600","1009935","1010640","1010740","1012960","1013240","1013485","1013530","1014955","1015605","1016640","1017895","1018665","1019155","1019360","1019395","1019770","1020690","1021395","1022055","1022900","1024370","1025075","1025555","1028705","1028980","1029310","1031410","1031460","1032410","1033595","1036215","1036765","1037050","1037160","1037230","1037495","1039170","1039425","1041040","1044445","1044885","1044940","1045330","1045995","1046675","1047855","1049625","1051215","1053610","1055875","1056150","1056930","1057420","1057560","1057870","1058425","1063240","1064985","1069560","1069630","1070475","1071765","1071885","1072140","1073905","1075410","1077655","1078590","1078970","1081740","1086985","1091885","1095085","1098505","1098765","1106345","1112525","1113325","1116185","1116905","1118525","1122825","1122830","1123925","1125085","1126245","1127985","1134345","1140425","1148365","1155665","1155965","1168505","1170130","1173925","1174085","1179525","1179545","1182105","1185385","1185525","1187365","1187705","1187945","1188685","1190265","1193585","1193680","1199265","1200605","1202385","1203005","1204065","1204925","1205165","1206325","1208725","1209145","1212325","1212685","1213005","1215145","1216925","1216985","1220725","1222465","1223105","1224685","1227065","1227365","1234445","1236145","1238465","1242305","1245580","1245945","1248325","1248465","1248605","1250725","1250745","1252965","1254765","1260245","1261055","1267145","1274025","1274785","1275665","1276505","1280725","1282765","1283285","1285225","1285445","1286665","1290945","1291625","1294085","1294165","1295225","1295825","1299725","1300725","1303965","1304425","1307085","1311405","1311505","1313185","1317445","1318225","1318285","1318625","1321425","1325405","1326445","1326945","1328775","1329020","1330705","1330745","1333535","1333795","1333925","1334945","1342245","1342585","1342645","1349925","1352425","1354025","1354505","1355925","1356165","1356265","1356445","1358365","1358585","1358885","1360125","1360385","1361765","1362505","1362885","1364765","1366665","1367525","1367885","1368925","1373865","1374885","1375640","1376885","1380245","1381290","1382845","1389705","1390165","1390965","1392445","1393005","1394505","1396545","1407230","1408405","1409305","1410610","1411125","1421045","1429405","1434485","1436145","1438245","1440705","1454845","1456945","1456985","1464445","1486065","1490165","1493805","1497925","1502005","1533405","1535865","1537265","1553845","1554265","1584165","1000526","1001821","1001916","1002181","1003576","1004941","1005006","1005131","1005481","1006671","1006966","1009266","1009686","1009726","1010596","1010716","1013821","1015171","1017526","1017976","1018936","1018996","1019606","1019956","1022251","1023256","1023321","1023331","1025871","1026566","1026761","1028346","1028636","1028741","1029001","1029341","1030521","1031676","1031876","1031996","1032036","1032461","1033881","1033996","1037091","1037096","1038066","1039516","1040121","1041446","1043026","1043821","1044101","1045251","1045791","1046776","1046841","1049056","1049346","1049646","1051036","1052641","1054176","1054846","1055606","1056096","1056416","1056481","1057181","1059391","1059426","1060411","1060741","1062161","1062421","1064566","1066296","1068126","1069096","1069816","1069896","1070121","1070851","1074741","1075561","1077686","1077801","1077881","1077891","1077981","1078971","1086581","1090686","1091086","1098526","1102711","1122411","1174791","1175831","1202926","1205226","1208986","1212406","1234226","1245561","1248726","1255786","1255931","1257546","1271526","1276786","1278126","1280096","1281966","1285826","1309691","1328556","1331896","1334466","1343066","1363026","1363706","1366886","1367126","1371086","1394506","1402506","170442","1003022","1003562","1003752","1004162","1004287","1006472","1008647","1009007","1009567","1010862","1012787","1013072","1013642","1013802","1013902","1013937","1014217","1014582","1014912","1015267","1015322","1016857","1017792","1018707","1024312","1024612","1024887","1025027","1025762","1031232","1031672","1032312","1032692","1032712","1034602","1036847","1037587","1038302","1040302","1042092","1042252","1044302","1045582","1046562","1046727","1046807","1049297","1049452","1049827","1050052","1050252","1053532","1054767","1054832","1055677","1058707","1058977","1059007","1059292","1061397","1061477","1062262","1062442","1063407","1063522","1066852","1070102","1071107","1071917","1072287","1073792","1073822","1075282","1075567","1076012","1077002","1077102","1077962","1080247","1081732","1084007","1084867","1085867","1139377","1151552","1156162","1170442","1191847","1201687","1222062","1248472","1248627","1271527","1313727","1323917","1325747","1328537","1331892","1333492","1338692","1375687","1413627","1420207","1000818","1000933","1001358","1001723","1002138","1004123","1004468","1005673","1007488","1009143","1012018","1013863","1013963","1014103","1015013","1016058","1018103","1020848","1021253","1021628","1022688","1022878","1023478","1024623","1027263","1027793","1027843","1030753","1030993","1032013","1032113","1032488","1032923","1033298","1033398","1035238","1035773","1036148","1037718","1038458","1040493","1040573","1040978","1041798","1041848","1046153","1047798","1048528","1049278","1049323","1050593","1050973","1052008","1052068","1052738","1052783","1052853","1053683","1055173","1056363","1056403","1056433","1058403","1060338","1060563","1060713","1061823","1061958","1062713","1063373","1064328","1065118","1065393","1067033","1068338","1069263","1071718","1073493","1076588","1076923","1077523","1077763","1078003","1082248","1083628","1158028","1159563","1328068","1331893","1333698","1375668","1394508","1000554","1000759","1000844","1001109","1001544","1002174","1003399","1003484","1004179","1005229","1005234","1005269","1005554","1007514","1007844","1008004","1009289","1009784","1010064","1010524","1011434","1012084","1014589","1016329","1017724","1018924","1018944","1021609","1022749","1022764","1023139","1023279","1024224","1024824","1026794","1026919","1027599","1029249","1030929","1031189","1031519","1031619","1031719","1032639","1032879","1034994","1039974","1040019","1041339","1041344","1041579","1041764","1044259","1046179","1046284","1046669","1047059","1048429","1048814","1049249","1049714","1049949","1050949","1051069","1052424","1053129","1054119","1054214","1054824","1056149","1056809","1056904","1059554","1059939","1060994","1061964","1063599","1064954","1065119","1066019","1067759","1069194","1069504","1070529","1072714","1074389","1074804","1075194","1075224","1077419","1077489","1077529","1077824","1081109","1109479","1139439","1154679","1211809","1234819","1333529","1342369","1344459","1375639","1394509"};
+
+
+public class NBSData {
 	
+	
+	
+	
+	public static void main(String[] args) throws IOException {
+		
+		/* Get actual class name to be printed on */
+		 Logger log = Logger.getLogger(NBSData.class.getName());
+	
+		 Properties properties = new Properties(); 
+		 properties.load(new FileInputStream("gcdmIds.properties"));
+		
+	
+		 	
+		//Read gcdm ids from properties file
+		String sgcdm_id= properties.getProperty("sgcdm_id");
+		String gcdm_id[] = sgcdm_id.split(",");
 			
-	public  void main(int[] args) throws IOException {
+		//Read network ids from proerpties file
+		String snetwork_id= properties.getProperty("snetwork_id");
+		String network_id[] = snetwork_id.split(",");
 		
-		int gcdm_id = args[0];
-		int startdate = args[1];
-		int enddate = args[2];
+			
 		
-		FileWriter fstream = new FileWriter("D:\\Dhana\\out.txt");
-        BufferedWriter out = new BufferedWriter(fstream);
+		String start = args[0];
+		String end = args[1]; 
 		
-			int[] x={1,5,6,8,9,10,11,200,28,150,151,152,44,37,38,40,169,170,25,26,27,21,22,23,29,30,31,42,104,165,166,167,168,124,256,253,254,257,255};
-			for (int j = 0; j<x.length; j++) 
+		long epochStart = getEpochTime(start);
+		long epochEnd = getEpochTime(end);
+		
+		log.info("Starting job from " +start+ " to " + end);
+	
+		FileWriter fstream = new FileWriter("/usr/local/code/nbs/nbs_api_history/nbs_output.txt");
+		
+	     BufferedWriter out = new BufferedWriter(fstream);
+		
+		for (int i = 0; i < gcdm_id.length; i++) {
+			
+			for (int j = 0; j<network_id.length; j++) 
 			{
-				URL nbs_url = new URL("http://wmg.api3.nextbigsound.com/metrics/external/gcdm_id.json");
+				URL nbs_url = new URL("http://wmg.api3.nextbigsound.com/metrics/external/"+gcdm_id[i]+".json");
 				try{
-					URLConnection connection = nbs_url.openConnection();
-					connection.setDoOutput(true);
-					OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-					writer.write("key=wseu0pl8cnl6yf77soyuhf4exrlvyf&start="+startdate+"&end="+enddate+"&network_metric_id="+x[j]);
+					URLConnection conn = nbs_url.openConnection();
+					conn.setDoOutput(true);
+					OutputStreamWriter writer = new OutputStreamWriter(conn.getOutputStream());
+					writer.write("key=wseu0pl8cnl6yf77soyuhf4exrlvyf&start="+epochStart+"&end="+epochEnd+"&network_metric_id="+network_id[j]);
 					writer.flush();
 					
 					try{
-						BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+						BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 						StringBuilder jsonString = new StringBuilder();
 						String res;
 						while((res = br.readLine())!=null)
@@ -53,17 +85,17 @@ public class NBS_Data{
 
 						for(int index=0;index<socialMediaArray.size();index++) {
 							JSONObject socialMedia= (JSONObject)socialMediaArray.get(index);
-							/*To get the artist details*/
+						//	To get the artist details
 							JSONObject service= (JSONObject)socialMedia.getJSONObject("artist");
 							int id=service.getInt("id");
 							String name=service.getString("name");
-							/*To get the network metric details*/
+						//	To get the network metric details
 							JSONObject network_metric= (JSONObject)socialMedia.getJSONObject("network_metric");
-							int n_id=network_metric.getInt("id");
-							String n_name=network_metric.getString("name");
-							/*Storing the URL field values into variables*/
+							int network_metric_id=network_metric.getInt("id");
+							String network_metric_name=network_metric.getString("name");
+						//	Storing the URL field values into variables
 							String location=socialMedia.getString("url");
-							/*TO retrieve the data values into an array*/
+						//	TO retrieve the data values into an array
 							JSONObject data=(JSONObject)socialMedia.getJSONObject("data");
 							String values=data.getString("values");
 							if(values.contains("[]")==true)
@@ -71,48 +103,55 @@ public class NBS_Data{
 								values="";
 							}
 							String valuesData[]=values.split(",");
-							/*Looping the values array for each artist*/
-							int epochtime=startdate;/*initializing the time*/
+						//	Looping the values array for each artist
+							
+								
+							long epochtime=epochStart;
 							
 							for(int d=0;d<=valuesData.length;d++){
-								/*incrementing the epoch time*/  
-								epochtime=epochtime+86400;
+								
+								if(epochtime<epochEnd){
+									
+									log.info("Epochtime is "+epochtime);
+																	
 								String values1=(valuesData[d].substring(valuesData[d].indexOf(":")+1).trim());
 								if(values1.contains("}")==true)
 								{
 									values1=values1.replace('}',' ');
 								}
 								
-								//Changing the epoch time to Actual data format//
-								long timeStamp = (long) epochtime * 1000;   
-
-								Date actual_date = new Date(timeStamp); 
-								DateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-								formatter = new SimpleDateFormat("dd-MMM-yyyy");
-								String today = formatter.format(actual_date);		
 								
+								
+								log.info("GCDM id: "+gcdm_id[i]);
 								//Printing the variables//
-								out.write(gcdm_id+",");
+								out.write(gcdm_id[i]+",");
 								out.write(id+",");							
 								out.write(name+",");
-								out.write(n_id+",");
-								out.write(n_name+",");	
+								out.write(network_metric_id+",");
+								out.write(network_metric_name+",");	
 								out.write(location.trim()+",");
 								out.write(epochtime+",");
-								out.write(today+",");
-								//int values2=Integer.parseInt(values1);
+								out.write(getDate(epochtime)+",");
 								out.write(values1);
-								//newline character
-								out.newLine();
-															
-							}
+								out.newLine();	
+								
+																						
+						//		incrementing the epoch time  
+									epochtime=epochtime+86400;
+									
+									
+								}
 							
 						}
+							
+					}
 						
 						
 					}
 					
 					catch (Exception e) {
+						
+						log.info("Artist ID" +gcdm_id[i] + " not present for network id "+network_id[j]);
 						// TODO: handle exception
 					}
 				}
@@ -120,9 +159,62 @@ public class NBS_Data{
 					//do nothing
 				}
 			}
-	
+		}
 		out.close();
 	}
+	
+	
+	
+	//Get the epoch time from the date string
+	public static long getEpochTime(String sdate) {
+		
+		/* Get actual class name to be printed on */
+		 Logger log = Logger.getLogger(NBSData.class.getName());
 
+
+		SimpleDateFormat df = new SimpleDateFormat("MM/dd/yy");
+		Date date;
+		long epochTime = 0;
+		try {
+			date = df.parse(sdate);
+			epochTime = date.getTime() / 1000 - 5 * 3600;
+			log.info("Epoch time for "+sdate+ " is " + epochTime);
+			// The output epoch time is 4 hours in advance to the UK epoch
+			// timecheck
+
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return epochTime;
+	}
+
+	// Get the String value of date from epoch time
+	public static String getDate(long millis) {
+		/* Get actual class name to be printed on */
+		 Logger log = Logger.getLogger(NBSData.class.getName());
+
+
+		// long millis = 1366070400;
+		Date date = new Date(millis * 1000);
+		DateFormat format = new SimpleDateFormat("dd-MMM-yyyy");
+		format.setTimeZone(TimeZone.getTimeZone("GMT"));
+		String formattedDate = format.format(date);
+
+		log.info("Formatted Date for " +millis+ "is " +formattedDate);
+
+		return formattedDate;
+	}
+	
 	
 }
+
+
+
+
+
+
+
+
+
