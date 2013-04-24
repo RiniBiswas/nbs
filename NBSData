@@ -25,9 +25,7 @@ import org.apache.log4j.Logger;
 
 
 public class NBSData {
-	
-	
-	
+		
 	
 	public static void main(String[] args) throws IOException {
 		
@@ -35,7 +33,7 @@ public class NBSData {
 		 Logger log = Logger.getLogger(NBSData.class.getName());
 	
 		 Properties properties = new Properties(); 
-		 properties.load(new FileInputStream("gcdmIds.properties"));
+		 properties.load(new FileInputStream("/usr/local/code/nbs/nbs_api_history/gcdmIds.properties"));
 		
 	
 		 	
@@ -112,7 +110,7 @@ public class NBSData {
 								
 								if(epochtime<epochEnd){
 									
-									log.info("Epochtime is "+epochtime);
+								log.info("Epochtime is "+epochtime);
 																	
 								String values1=(valuesData[d].substring(valuesData[d].indexOf(":")+1).trim());
 								if(values1.contains("}")==true)
